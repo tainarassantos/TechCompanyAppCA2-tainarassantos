@@ -7,8 +7,6 @@ package techcompanyapp;
  * 
  */
 
-package techcompanyapp;
-
 import java.util.List;
 import java.util.Scanner;
 

@@ -5,9 +5,9 @@ package techcompanyapp;
  *
  * @author Tainara
  */
-package techcompanyapp;
 
 public enum MenuENUM {
+    //the principal menu enum configuration
     SORT(1, "SORT employees"),
     SEARCH(2, "SEARCH employees"),
     ADD_RECORDS(3, "ADD records"),
@@ -30,6 +30,7 @@ public enum MenuENUM {
         return description;
     }
     
+    //convert the number input to the menuEnum
     public static MenuENUM fromOptionNumber(int optionNumber) {
         for (MenuENUM option : values()) {
             if (option.getOptionNumber() == optionNumber) {
@@ -39,6 +40,7 @@ public enum MenuENUM {
         throw new IllegalArgumentException("Invalid menu option: " + optionNumber);
     }
     
+    //print the menu structure for the user choose the option
     public static void displayMainMenu() {
         System.out.println("\n=== Tech Company App ===");
         System.out.println("Main Menu:");
