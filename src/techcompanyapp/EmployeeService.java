@@ -54,16 +54,32 @@ public class EmployeeService {
         List<Employee> first20 = new ArrayList<>(employees.subList(0, count));
         
         sortWithInsertionSort(first20, 
-            Comparator.comparing(Employee::getLastName)
-                     .thenComparing(Employee::getFirstName));
+            Comparator.comparing(Employee::getFirstName)
+                     .thenComparing(Employee::getLastName));
 
-        System.out.println("\n=== First 20 Employees Sorted by Name ===");
+        System.out.println("\n=== First 20 Employees Sorted by Name (All Fields) ===");
         System.out.println("==========================================");
-        first20.forEach(emp -> System.out.printf("%-15s %-15s%n", 
-            emp.getLastName(), emp.getFirstName()));
-        System.out.println("==========================================");
+                
+        System.out.printf("%-12s %-12s %-8s %-25s %-10s %-20s %-20s %-25s %-15s%n", 
+                            "First Name", "Last Name", "Gender", "Email", "Salary", "Department", 
+                            "Position", "Department", "Company");
+        System.out.println("------------------------------------------------------------------------------------");
+
+        //printing the selected employee data        
+        first20.forEach(emp -> System.out.printf("%-12s %-12s %-8s %-25s €%-9.2f %-20s %-20s %-25s %-15s%n",
+            emp.getFirstName(),
+            emp.getLastName(),
+            emp.getGender(),
+            emp.getEmail(),
+            emp.getSalary(),
+            emp.getDepartment().getDisplayName(),
+            emp.getPosition() != null ? emp.getPosition() : "N/A",
+            emp.getJobTitle().getDisplayName(),
+            emp.getCompany()));
+
+        System.out.println("====================================================================================");
     }
-    
+        
     /**
      * SORTING OPERATIONS > sortByDepartment
      * Sorts employees by their specific department. I group employees department-wise for better analysis. 
@@ -71,11 +87,43 @@ public class EmployeeService {
      */
     public static void sortByDepartment(List<Employee> employees) {
         List<Employee> sorted = new ArrayList<>(employees);
+        //sortWithInsertionSort(sorted,
+        //    Comparator.comparing(e -> e.getDepartment().getDisplayName(),
+        //        String.CASE_INSENSITIVE_ORDER));
+        //Sort by department name and then by first/last name
         sortWithInsertionSort(sorted,
-            Comparator.comparing(e -> e.getDepartment().getDisplayName(),
-                String.CASE_INSENSITIVE_ORDER));
+        Comparator.comparing((Employee e) -> e.getDepartment().getDisplayName(), 
+                           String.CASE_INSENSITIVE_ORDER)
+                 .thenComparing(Employee::getFirstName)
+                 .thenComparing(Employee::getLastName));
 
         System.out.println("\n=== Employees Sorted by Department ===");
+        System.out.println("===============================================================================================================");
+        System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n",
+            "First Name", "Last Name", "Position", "Job Title", "Department", "Company", "Email");
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
+
+        Department currentDept = null;
+        for (Employee emp : sorted) {
+            //shows the department name on top
+            if (!emp.getDepartment().equals(currentDept)) {
+                currentDept = emp.getDepartment();
+                System.out.printf("\n=== %s ===%n", currentDept.getDisplayName().toUpperCase());
+            }
+
+            //print the employee data
+            System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n",
+                emp.getFirstName(),
+                emp.getLastName(),
+                emp.getPosition() != null ? emp.getPosition() : "N/A",
+                emp.getJobTitle().getDisplayName(),
+                currentDept.getDisplayName(),  //currentDept updated
+                emp.getCompany(),
+                emp.getEmail());
+        }
+        System.out.println("===============================================================================================================");
+    
+        /**System.out.println("\n=== Employees Sorted by Department ===");
         Department currentDept = null;
         for (Employee emp : sorted) {
             if (!emp.getDepartment().equals(currentDept)) {
@@ -86,7 +134,7 @@ public class EmployeeService {
                 emp.getFirstName(),
                 emp.getLastName(),
                 emp.getJobTitle().getDisplayName());
-        }
+        }*/
     }
 
     
@@ -163,14 +211,19 @@ public class EmployeeService {
 
         String firstName = InputValidator.validateName(scanner, "first name");
         String lastName = InputValidator.validateName(scanner, "last name");
-        String gender = InputValidator.validateName(scanner, "gender (Male/Female/Other)");
+        String gender = InputValidator.validateGender(scanner);
         String email = InputValidator.validateEmail(scanner);
         double salary = InputValidator.validateSalary(scanner);
         Department department = InputValidator.validateDepartment(scanner);
         String position = InputValidator.validatePosition(scanner);
         ManagerType jobTitle = InputValidator.validateManagerType(scanner);
-        String company = InputValidator.validateName(scanner, "company");
-
+        String company = InputValidator.validateCompany(scanner);
+        
+        //extra validation to ensure critical fields are not null
+        if (position == null || position.isEmpty()) {
+            position = "Not specified";
+        }
+        
         return new Employee(firstName, lastName, gender, email, salary, 
                           department, position, jobTitle, company);
     }
