@@ -81,4 +81,17 @@ public class Employee implements Comparable<Employee> {
                 firstName, lastName, position, jobTitle, department, company, email);
     }
 
+    public String toCsvLine() {
+        return String.join(",",
+                firstName,
+                lastName,
+                gender != null ? gender : "",
+                email != null ? email : "",
+                String.valueOf(salary),
+                department.toString(),
+                position != null ? position : "",
+                jobTitle.toString(),
+                company != null ? company : ""
+        );
+    }
 }

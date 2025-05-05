@@ -79,7 +79,8 @@ public class FileHandler {
     }
     
     private static String empToCsvLine(Employee emp) {
-        return String.join(",",  //method to get the data information
+        return emp.toCsvLine(); //now use the method of the class Employee
+        /**return String.join(",",  //method to get the data information
             emp.getFirstName(),
             emp.getLastName(),
             emp.getGender(),
@@ -89,7 +90,7 @@ public class FileHandler {
             emp.getPosition(),
             emp.getJobTitle().name(),
             emp.getCompany()
-        );        
+        );
+        * */
     }
 }
-

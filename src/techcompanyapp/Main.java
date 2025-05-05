@@ -6,6 +6,7 @@ package techcompanyapp;
  * 
  */
 
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,7 +45,7 @@ public class Main {
                         break;
                     case EXIT:
                         running = false;
-                        System.out.println("Exiting the system. Goodbye!");
+                        System.out.println("Thank you. Exiting the Tech Company system!");
                         break;
                 }
             } catch (IllegalArgumentException e) {

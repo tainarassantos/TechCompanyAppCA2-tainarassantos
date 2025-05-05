@@ -36,7 +36,7 @@ public enum MenuENUM {
                 return option;
             }
         }
-        throw new IllegalArgumentException("Invalid menu option: " + optionNumber);
+        throw new IllegalArgumentException("Invalid menu option, use a numeric input: " + optionNumber);
     }
     
     //print the menu structure for the user choose the option

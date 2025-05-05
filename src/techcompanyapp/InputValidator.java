@@ -84,7 +84,16 @@ public class InputValidator {
         }
     }
     
+    //validate the employee position level
+    public static String validatePosition(Scanner scanner) {
+        System.out.println("\nCommon position levels (you can enter any value):");
+        System.out.println("- senior\n- middle\n- junior\n- intern\n- contract");
+        System.out.print("Enter position level (optional, press Enter to skip): ");
+        String input = scanner.nextLine().trim();
+        return input.isEmpty() ? null : input;
+    }
     
+    /**
     public static ManagerType validateManagerType(Scanner scanner) {
         System.out.println("\nAvailable positions:");
         for (ManagerType type : ManagerType.values()) {
@@ -100,7 +109,30 @@ public class InputValidator {
                 System.out.println("Invalid position. Please choose from the list above.");
             }
         }
-    }
+    }*/
     
-  
+    public static ManagerType validateManagerType(Scanner scanner) {
+        System.out.println("\nAvailable positions:");
+        for (ManagerType type : ManagerType.values()) {
+            System.out.printf("- %s (%s)%n", type.name(), type.getDisplayName());
+        }
+
+        while (true) {
+            System.out.print("Enter position name or display name: ");
+            String input = scanner.nextLine().trim();
+
+            try {
+                // Tenta encontrar tanto pelo nome enum quanto pelo displayName
+                for (ManagerType type : ManagerType.values()) {
+                    if (type.name().equalsIgnoreCase(input.replace(" ", "_").replace("-", "_")) || 
+                        type.getDisplayName().equalsIgnoreCase(input)) {
+                        return type;
+                    }
+                }
+                throw new IllegalArgumentException();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid position. Please choose from the list above.");
+            }
+        }
+    }
 }

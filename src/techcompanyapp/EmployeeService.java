@@ -5,7 +5,7 @@ package techcompanyapp;
  * @author Tainara
  */
 
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -35,6 +35,27 @@ public class EmployeeService {
         }
     }
 
+    
+    public static void sortFirst20Names(List<Employee> employees) {
+        int count = Math.min(employees.size(), 20);
+
+        // Cria uma cópia dos primeiros 20 funcionários
+        List<Employee> sorted = new ArrayList<>(employees.subList(0, count));
+
+        // Ordena por primeiro nome
+        recursiveMergeSort(sorted, Comparator.comparing(Employee::getFirstName));
+
+        // Imprime os resultados ordenados
+        System.out.println("First 20 Employees Sorted by Name:");
+        for (Employee e : sorted) {
+            System.out.printf("%s, %s, %s, %s, %s, %s%n",
+                    e.getFirstName(), e.getLastName(), e.getEmail(),
+                    e.getJobTitle(), e.getDepartment(), e.getCompany());
+        }
+    }
+
+    
+    /**
     private static void sortFirst20Names(List<Employee> employees) {
         List<Employee> sorted = employees.subList(0, Math.min(employees.size(), 20));
         recursiveMergeSort(sorted, Comparator.comparing(Employee::getFirstName)
@@ -44,7 +65,6 @@ public class EmployeeService {
         sorted.forEach(emp -> System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany()));
         System.out.println("\n");
     }
-    /**
     private static void sortFirst20Names(List<Employee> employees) {
         List<Employee> sorted = new ArrayList<>(employees.subList(0, Math.min(employees.size(), 20)));
         recursiveMergeSort(sorted, Comparator.comparing(Employee::getLastName)
@@ -69,7 +89,39 @@ public class EmployeeService {
  */
     
     
-    private static void sortByDepartment(List<Employee> employees) {   
+    private static void sortByDepartment(List<Employee> employees) {
+        //create a temporary list "sortedEmployees" to do not modify the original list
+        List<Employee> sortedEmployees = new ArrayList<>(employees);
+        
+        recursiveMergeSort(sortedEmployees, Comparator.comparing(Employee::getDepartment)
+                           .thenComparing(Employee::getLastName));
+        
+        System.out.println("\nEmployees Sorted by Department:");
+        Department currentDept = null;
+        for (Employee emp : sortedEmployees) {
+            if (!emp.getDepartment().equals(currentDept)) {
+                currentDept = emp.getDepartment();
+                System.out.println("\n=== " + currentDept.getDisplayName() + " ===");
+            }
+            //System.out.println(emp);
+            //sortedEmployees.forEach(emp -> System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany()));
+            //System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany());
+            
+            System.out.println("\n");
+            
+            /**
+            System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n",
+            emp.getFirstName(),
+            emp.getLastName(),
+            emp.getPosition() != null ? emp.getPosition() : "",
+            emp.getJobTitle(),
+            emp.getDepartment().getDisplayName(),
+            emp.getCompany(),
+            emp.getEmail()); */
+        }
+    }
+ 
+    /**private static void sortByDepartment(List<Employee> employees) {   
         recursiveMergeSort(employees, Comparator.comparing(Employee::getDepartment)
                                              .thenComparing(Employee::getLastName));
         
