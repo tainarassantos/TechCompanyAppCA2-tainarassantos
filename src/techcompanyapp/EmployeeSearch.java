@@ -4,10 +4,11 @@ package techcompanyapp;
  *
  * @author Tainara
  */
-
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 public class EmployeeSearch {
     public static void searchMenu(List<Employee> employees, Scanner scanner) {
@@ -34,18 +35,53 @@ public class EmployeeSearch {
         }
     }
 
-    public static void searchByFirstName(List<Employee> employees, Scanner scanner) {
-        System.out.print("\nEnter first name to search: ");
-        String firstName = scanner.nextLine().trim().toLowerCase();
+    public static void searchByFullName(List<Employee> employees, Scanner scanner) {
+        System.out.print("\nEnter full name (First Last): ");
+        String fullName = scanner.nextLine().trim();
         
-        List<Employee> found = employees.stream()
-            .filter(e -> e.getFirstName().toLowerCase().contains(firstName))
-            .toList();
+        // Ordena a lista antes da busca
+        List<Employee> sorted = new ArrayList<>(employees);
+        EmployeeService.sortWithInsertionSort(sorted,
+            Comparator.comparing(Employee::getLastName)
+                     .thenComparing(Employee::getFirstName));
         
-        displaySearchResults(found, "Employees with first name containing '" + firstName + "'");
+        // Busca binária
+        Employee found = binarySearchRecursive(sorted, fullName, 0, sorted.size()-1);
+        
+        if (found != null) {
+            System.out.println("\n=== Employee Found ===");
+            System.out.println("Name: " + found.getFirstName() + " " + found.getLastName());
+            System.out.println("Title: " + found.getJobTitle().getDisplayName());
+            System.out.println("Department: " + found.getDepartment().getDisplayName());
+            System.out.println("Email: " + found.getEmail());
+        } else {
+            System.out.println("\nEmployee not found.");
+        }
+    }
+   
+    // BINARY SEARCH recursivo
+    public static Employee binarySearchRecursive(List<Employee> sortedEmployees, 
+                                              String fullName, int left, int right) {
+        if (left > right) return null;
+        
+        int mid = left + (right - left) / 2;
+        Employee midEmp = sortedEmployees.get(mid);
+        String midFullName = midEmp.getFirstName() + " " + midEmp.getLastName();
+        
+        int comparison = fullName.compareToIgnoreCase(midFullName);
+        if (comparison == 0) {
+            return midEmp;
+        } else if (comparison < 0) {
+            return binarySearchRecursive(sortedEmployees, fullName, left, mid - 1);
+        } else {
+            return binarySearchRecursive(sortedEmployees, fullName, mid + 1, right);
+        }
     }
 
-    public static void searchByFullName(List<Employee> employees, Scanner scanner) {
+    
+    
+    
+     /** public static void searchByFullName(List<Employee> employees, Scanner scanner) {
         System.out.print("\nEnter last name to search: ");
         String lastName = scanner.nextLine().trim().toLowerCase();
         
@@ -58,6 +94,19 @@ public class EmployeeSearch {
         
         displaySearchResults(found, "Employees with last name containing '" + lastName + "'");
     }
+
+    public static void searchByFirstName(List<Employee> employees, Scanner scanner) {
+        System.out.print("\nEnter first name to search: ");
+        String firstName = scanner.nextLine().trim().toLowerCase();
+        
+        List<Employee> found = employees.stream()
+            .filter(e -> e.getFirstName().toLowerCase().contains(firstName))
+            .toList();
+        
+        displaySearchResults(found, "Employees with first name containing '" + firstName + "'");
+    }
+
+    
 
     public static List<Employee> searchByLastName(List<Employee> employees, String lastName) {
         return employees.stream()
@@ -114,5 +163,7 @@ public class EmployeeSearch {
             }
         }
         return null;
-    }
+    } */
+    
+    
 }
