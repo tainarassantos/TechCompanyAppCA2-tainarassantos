@@ -2,7 +2,10 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Manages all file operations for employee data.
+ * I handle loading from and saving to CSV files while validating data integrity.
  */
 
 import java.io.*;
@@ -10,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
+    /**
+     * Loads employees information from CSV file
+     */
     public static List<Employee> loadFromFile(String filename) {
         List<Employee> employees = new ArrayList<>();
         
@@ -36,6 +42,9 @@ public class FileHandler {
         return employees;
     }
     
+    /**
+     * Saves all employees information to CSV 
+     */
     public static boolean saveToFile(String filename, List<Employee> employees) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             // Write header
@@ -52,6 +61,9 @@ public class FileHandler {
         }
     }
     
+    /**
+     * Converts CSV line to Employee object
+     */
     private static Employee parseEmployee(String csvLine) {
         try {
             String[] data = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex validate the info separated per ","
@@ -78,9 +90,14 @@ public class FileHandler {
         }
     }
     
+    /**
+     * Formats Employee for CSV output 
+     */
     private static String empToCsvLine(Employee emp) {
-        return emp.toCsvLine(); //now use the method of the class Employee
-        /**return String.join(",",  //method to get the data information
+        return emp.toCsvLine(); //now use the method CSV 
+        
+        /** OLD METHOD:
+         * return String.join(",",  //method to get the data information
             emp.getFirstName(),
             emp.getLastName(),
             emp.getGender(),

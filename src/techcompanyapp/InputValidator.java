@@ -2,12 +2,18 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Validates all user inputs throughout the application.
+ * I ensure data integrity by checking menu choices and employee details.
  */
 
 import java.util.Scanner;
 
 public class InputValidator {
+    /**
+     * Validates main menu selection (user choise)
+     */
     public static int validateMenuChoice(Scanner scanner) {
         while (true) {
             try {
@@ -23,6 +29,9 @@ public class InputValidator {
         }
     }
     
+    /**
+     * validateSubMenuChoice is the function to checks submenu selection range 
+     */
     public static int validateSubMenuChoice(Scanner scanner, MenuENUM mainMenuOption) {
         int maxOption = 0;
         switch (mainMenuOption) {
@@ -45,6 +54,9 @@ public class InputValidator {
         }
     }
     
+    /**
+     * validateName Ensures names input aren't empty 
+     */
     public static String validateName(Scanner scanner, String fieldName) {
         while (true) {
             System.out.print("Enter " + fieldName + ": ");
@@ -56,6 +68,9 @@ public class InputValidator {
         }
     }
     
+    /**
+     * validateSalary validates if the salary input is numeric 
+     */
     public static double validateSalary(Scanner scanner) {
         while (true) {
             System.out.print("Enter salary: ");
@@ -67,6 +82,9 @@ public class InputValidator {
         }
     }
     
+    /**
+     * validateDepartment confirms department exists/is valid
+     */
     public static Department validateDepartment(Scanner scanner) {
         System.out.println("\nAvailable departments:");
         for (Department dept : Department.values()) {
@@ -84,7 +102,9 @@ public class InputValidator {
         }
     }
     
-    //validate the employee position level
+    /**
+     * validatePosition validate the employee position level according with the options
+     */
     public static String validatePosition(Scanner scanner) {
         System.out.println("\nCommon position levels (you can enter any value):");
         System.out.println("- senior\n- middle\n- junior\n- intern\n- contract");
@@ -94,23 +114,8 @@ public class InputValidator {
     }
     
     /**
-    public static ManagerType validateManagerType(Scanner scanner) {
-        System.out.println("\nAvailable positions:");
-        for (ManagerType type : ManagerType.values()) {
-            System.out.println("- " + type.name());
-        }
-        
-        while (true) {
-            System.out.print("Enter position: ");
-            String input = scanner.nextLine().trim().toUpperCase().replace(" ", "_").replace("-", "_");
-            try {
-                return ManagerType.valueOf(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid position. Please choose from the list above.");
-            }
-        }
-    }*/
-    
+     * validateManagerType verifies job title/manager selection
+     */
     public static ManagerType validateManagerType(Scanner scanner) {
         System.out.println("\nAvailable positions:");
         for (ManagerType type : ManagerType.values()) {
@@ -122,7 +127,7 @@ public class InputValidator {
             String input = scanner.nextLine().trim();
 
             try {
-                // Tenta encontrar tanto pelo nome enum quanto pelo displayName
+                //Try to find both by enum name and by displayName
                 for (ManagerType type : ManagerType.values()) {
                     if (type.name().equalsIgnoreCase(input.replace(" ", "_").replace("-", "_")) || 
                         type.getDisplayName().equalsIgnoreCase(input)) {

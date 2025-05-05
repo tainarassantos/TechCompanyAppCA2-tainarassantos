@@ -2,10 +2,12 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara de Souza Santos
- * 
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Main application class controlling program flow.
+ * I manage the core application loop, handle menu navigation, and coordinate data loading/saving.
+ * All user interactions start from this central controller. 
  */
-
 
 import java.util.List;
 import java.util.Scanner;
@@ -40,12 +42,9 @@ public class Main {
                     case ADD_RECORDS:
                         handleAddRecordsMenu();
                         break;
-                    case GENERATE_RANDOM:
-                        handleGenerateRandom();
-                        break;
                     case EXIT:
                         running = false;
-                        System.out.println("Thank you. Exiting the Tech Company system!");
+                        System.out.println("\nThank you. Exiting the Tech Company system!");
                         break;
                 }
             } catch (IllegalArgumentException e) {
@@ -56,6 +55,9 @@ public class Main {
         scanner.close();
     }
     
+    /**
+     * loadEmployeeData: Loads employee data from file at program start
+     */
     private static void loadEmployeeData() {
         System.out.println("\nLoading employee data from file: " + FILE_NAME);
         employees = FileHandler.loadFromFile(FILE_NAME);
@@ -69,31 +71,32 @@ public class Main {
         }
     }
     
+    /**
+     * handleSortMenu: Handles the sorting menu selection and execution
+     */
     private static void handleSortMenu() {
         System.out.println("\nSort Menu Selected");
         EmployeeService.sortMenu(employees, scanner);
     }
     
+    /**
+     * handleSearchMenu: Manage the search menu selection and processing
+     */
     private static void handleSearchMenu() {
         System.out.println("\nSearch Menu Selected");
         EmployeeSearch.searchMenu(employees, scanner);
     }
     
+    /**
+     * handleAddRecordsMenu: Controls add/edit records functionality
+     */
     private static void handleAddRecordsMenu() {
         System.out.println("\nAdd/Edit Records Menu Selected");
         EmployeeService.addRecordsMenu(employees, scanner);
         
-        // Save changes to file after modifications
+        //Save changes to file after modifications
         FileHandler.saveToFile(FILE_NAME, employees);
     }
     
-    private static void handleGenerateRandom() {
-        System.out.println("\nGenerate Random Employee Selected");
-        Employee newEmployee = EmployeeService.generateRandomEmployee();
-        employees.add(newEmployee);
-        System.out.println("Generated new employee: " + newEmployee);
-        
-        // Save changes to file
-        FileHandler.saveToFile(FILE_NAME, employees);
-    }
+    
 }

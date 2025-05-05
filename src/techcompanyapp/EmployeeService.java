@@ -2,18 +2,27 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Handles all employee data operations including sorting(Recursive Insertion Sort), adding(input data and random), and editing (extra in my application).
+ * I manage employee records and implement sorting algorithms to organise the company data.
+ * My methods work with the main system to keep employee information up-to-date.
  */
 
-//import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class EmployeeService {
     private static final Random random = new Random();
 
+    /**
+     * SORTING OPERATIONS > sortMenu
+     * Controls the sorting SUBmenu navigation. 
+     * I display sorting options and delegate to specific sort methods
+     */
     public static void sortMenu(List<Employee> employees, Scanner scanner) {
         boolean inSortMenu = true;
         while (inSortMenu) {
@@ -35,177 +44,88 @@ public class EmployeeService {
         }
     }
 
-    
+    /**
+     * SORTING OPERATIONS > sortFirst20Names
+     * Sorts and displays first 20 employee names alphabetically.
+     * I used the recursive insertion sort for efficient organization.
+     */
     public static void sortFirst20Names(List<Employee> employees) {
         int count = Math.min(employees.size(), 20);
-
-        // Cria uma cópia dos primeiros 20 funcionários
-        List<Employee> sorted = new ArrayList<>(employees.subList(0, count));
-
-        // Ordena por primeiro nome
-        recursiveMergeSort(sorted, Comparator.comparing(Employee::getFirstName));
-
-        // Imprime os resultados ordenados
-        System.out.println("First 20 Employees Sorted by Name:");
-        for (Employee e : sorted) {
-            System.out.printf("%s, %s, %s, %s, %s, %s%n",
-                    e.getFirstName(), e.getLastName(), e.getEmail(),
-                    e.getJobTitle(), e.getDepartment(), e.getCompany());
-        }
-    }
-
-    
-    /**
-    private static void sortFirst20Names(List<Employee> employees) {
-        List<Employee> sorted = employees.subList(0, Math.min(employees.size(), 20));
-        recursiveMergeSort(sorted, Comparator.comparing(Employee::getFirstName)
-                                          .thenComparing(Employee::getLastName));
+        List<Employee> first20 = new ArrayList<>(employees.subList(0, count));
         
-        System.out.println("\nFirst 20 Employees Sorted by Name:");
-        sorted.forEach(emp -> System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany()));
-        System.out.println("\n");
-    }
-    private static void sortFirst20Names(List<Employee> employees) {
-        List<Employee> sorted = new ArrayList<>(employees.subList(0, Math.min(employees.size(), 20)));
-        recursiveMergeSort(sorted, Comparator.comparing(Employee::getLastName)
-                                          .thenComparing(Employee::getFirstName));
-
-        System.out.println("\nFirst 20 Employees Sorted by Name:");
-        System.out.println("====================================================================================================");
-        System.out.printf("%-15s %-15s %-25s %-20s %-20s %-15s%n", 
-                         "Last Name", "First Name", "Email", "Manager", "Department", "Company");
-        System.out.println("----------------------------------------------------------------------------------------------------");
-
-        sorted.forEach(emp -> System.out.printf("%-15s %-15s %-25s %-20s %-20s %-15s%n",
-            emp.getLastName(),
-            emp.getFirstName(),
-            emp.getEmail(),
-            emp.getJobTitle().getDisplayName(),
-            emp.getDepartment().getDisplayName(),
-            emp.getCompany()));
-
-        System.out.println("====================================================================================================");
-    }
- */
-    
-    
-    private static void sortByDepartment(List<Employee> employees) {
-        //create a temporary list "sortedEmployees" to do not modify the original list
-        List<Employee> sortedEmployees = new ArrayList<>(employees);
-        
-        recursiveMergeSort(sortedEmployees, Comparator.comparing(Employee::getDepartment)
-                           .thenComparing(Employee::getLastName));
-        
-        System.out.println("\nEmployees Sorted by Department:");
-        Department currentDept = null;
-        for (Employee emp : sortedEmployees) {
-            if (!emp.getDepartment().equals(currentDept)) {
-                currentDept = emp.getDepartment();
-                System.out.println("\n=== " + currentDept.getDisplayName() + " ===");
-            }
-            //System.out.println(emp);
-            //sortedEmployees.forEach(emp -> System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany()));
-            //System.out.println(emp.getFirstName() + ", " + emp.getLastName() + ", " + emp.getEmail() + ", " + emp.getJobTitle() + ", " + emp.getDepartment() + ", " + emp.getCompany());
-            
-            System.out.println("\n");
-            
-            /**
-            System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n",
-            emp.getFirstName(),
-            emp.getLastName(),
-            emp.getPosition() != null ? emp.getPosition() : "",
-            emp.getJobTitle(),
-            emp.getDepartment().getDisplayName(),
-            emp.getCompany(),
-            emp.getEmail()); */
-        }
-    }
- 
-    /**private static void sortByDepartment(List<Employee> employees) {   
-        recursiveMergeSort(employees, Comparator.comparing(Employee::getDepartment)
-                                             .thenComparing(Employee::getLastName));
-        
-        System.out.println("\nEmployees Sorted by Department:");
-        Department currentDept = null;
-        for (Employee emp : employees) {
-            if (!emp.getDepartment().equals(currentDept)) {
-                currentDept = emp.getDepartment();
-                System.out.println("\n=== " + currentDept.getDisplayName() + " ===");
-            }
-            System.out.println(emp);
-        }
-    }
-    
-    private static void sortByDepartment(List<Employee> employees) {
-        //create a temporary list to do not modify the original list
-        List<Employee> sortedEmployees = new ArrayList<>(employees);
-
-        //sord the copy
-        recursiveMergeSort(sortedEmployees, 
-            Comparator.comparing(Employee::getDepartment)
-                     .thenComparing(Employee::getLastName)
+        sortWithInsertionSort(first20, 
+            Comparator.comparing(Employee::getLastName)
                      .thenComparing(Employee::getFirstName));
 
-        System.out.println("\nEmployees Sorted by Department:");
-        System.out.println("====================================================================================================");
-        System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n", 
-                        "First Name", "Last Name", "Position", "Job Title", "Department", "Company", "Email");
-        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("\n=== First 20 Employees Sorted by Name ===");
+        System.out.println("==========================================");
+        first20.forEach(emp -> System.out.printf("%-15s %-15s%n", 
+            emp.getLastName(), emp.getFirstName()));
+        System.out.println("==========================================");
+    }
+    
+    /**
+     * SORTING OPERATIONS > sortByDepartment
+     * Sorts employees by their specific department. I group employees department-wise for better analysis. 
+     * (I include these extra function because I wanted to learn how show data per one specific field of the database)
+     */
+    public static void sortByDepartment(List<Employee> employees) {
+        List<Employee> sorted = new ArrayList<>(employees);
+        sortWithInsertionSort(sorted,
+            Comparator.comparing(e -> e.getDepartment().getDisplayName(),
+                String.CASE_INSENSITIVE_ORDER));
 
+        System.out.println("\n=== Employees Sorted by Department ===");
         Department currentDept = null;
-        for (Employee emp : sortedEmployees) {
+        for (Employee emp : sorted) {
             if (!emp.getDepartment().equals(currentDept)) {
                 currentDept = emp.getDepartment();
-                System.out.println("\n=== " + currentDept.getDisplayName() + " ===");
+                System.out.println("\n--- " + currentDept.getDisplayName() + " ---");
             }
-            System.out.printf("%-15s %-15s %-10s %-25s %-20s %-20s %-15s%n",
+            System.out.printf("%-15s %-15s | %-20s%n",
                 emp.getFirstName(),
                 emp.getLastName(),
-                emp.getPosition() != null ? emp.getPosition() : "",
-                emp.getJobTitle().getDisplayName(),
-                emp.getDepartment().getDisplayName(),
-                emp.getCompany(),
-                emp.getEmail());
-        }
-        System.out.println("====================================================================================================");
-    }
-    * 
-    * */
-
-    public static void recursiveMergeSort(List<Employee> employees, Comparator<Employee> comparator) {
-        if (employees.size() <= 1) return;
-        
-        int mid = employees.size() / 2;
-        List<Employee> left = employees.subList(0, mid);
-        List<Employee> right = employees.subList(mid, employees.size());
-        
-        recursiveMergeSort(left, comparator);
-        recursiveMergeSort(right, comparator);
-        
-        merge(employees, left, right, comparator);
-    }
-
-    private static void merge(List<Employee> employees, List<Employee> left, 
-                            List<Employee> right, Comparator<Employee> comparator) {
-        int i = 0, j = 0, k = 0;
-        
-        while (i < left.size() && j < right.size()) {
-            if (comparator.compare(left.get(i), right.get(j)) <= 0) {
-                employees.set(k++, left.get(i++));
-            } else {
-                employees.set(k++, right.get(j++));
-            }
-        }
-        
-        while (i < left.size()) {
-            employees.set(k++, left.get(i++));
-        }
-        
-        while (j < right.size()) {
-            employees.set(k++, right.get(j++));
+                emp.getJobTitle().getDisplayName());
         }
     }
 
+    
+    /** Core Algorithm */
+    /**
+     * recursiveInsertionSort recursively sorts employees using insertion sort.
+    * I compare elements and arrange them in order step-by-step.
+     */
+    public static void recursiveInsertionSort(List<Employee> employees, 
+                                           Comparator<Employee> comparator, int n) {
+        if (n <= 1) return;
+        
+        recursiveInsertionSort(employees, comparator, n-1);
+        
+        Employee last = employees.get(n-1);
+        int j = n-2;
+        
+        while (j >= 0 && comparator.compare(employees.get(j), last) > 0) {
+            employees.set(j+1, employees.get(j));
+            j--;
+        }
+        employees.set(j+1, last);
+    }
+
+    /**
+     * sortWithInsertionSort starts the recursive sorting process (Wrapper para o insertion sort).
+    * I prepare the list for sorting with the given comparator
+     */
+    public static void sortWithInsertionSort(List<Employee> employees, 
+                                          Comparator<Employee> comparator) {
+        recursiveInsertionSort(employees, comparator, employees.size());
+    }
+    
+    
+    /** Employee Management */
+    /**
+     * addRecordsMenu manages the employee add/edit submenu.
+     * I handle new entries, edits, and random generation .
+     */
     public static void addRecordsMenu(List<Employee> employees, Scanner scanner) {
         boolean inAddMenu = true;
         while (inAddMenu) {
@@ -233,7 +153,11 @@ public class EmployeeService {
             }
         }
     }
-
+    
+    /**
+     * createEmployeeFromInput creates new employees from user input
+     * I validate all fields before creating records.
+     */
     public static Employee createEmployeeFromInput(Scanner scanner) {
         System.out.println("\n=== Add New Employee ===");
 
@@ -251,7 +175,10 @@ public class EmployeeService {
                           department, position, jobTitle, company);
     }
 
-
+    /**
+     * editEmployeeMenu guides through employee selection for editing
+     * I help users find and choose which record to modify
+     */
     private static void editEmployeeMenu(List<Employee> employees, Scanner scanner) {
         System.out.print("\nEnter employee last name to edit: ");
         String lastName = scanner.nextLine();
@@ -278,7 +205,35 @@ public class EmployeeService {
         
         editEmployee(found.get(selection-1), scanner);
     }
-
+    
+    /**
+     * generateRandomEmployee generates random employee data for testing
+     * I create realistic mock data using predefined values
+     */
+    public static Employee generateRandomEmployee() {
+        String[] firstNames = {"John", "Isa", "David", "Tainara", "Robert", "Emily", "Mark", "Sarah"};
+        String[] lastNames = {"Parnell", "Johnson", "Cuddy", "Souza", "Williams", "OConnel", "Jones"};
+        
+        return new Employee(
+            firstNames[random.nextInt(firstNames.length)],
+            lastNames[random.nextInt(lastNames.length)],
+            random.nextBoolean() ? "Male" : "Female",
+            "email" + random.nextInt(1000) + "@company.com",
+            30000 + random.nextInt(70000),
+            Department.values()[random.nextInt(Department.values().length)],
+            new String[]{"junior", "middle", "senior"}[random.nextInt(3)],
+            ManagerType.values()[random.nextInt(ManagerType.values().length)],
+            "TechInnovators"
+        );
+    }
+    
+    
+    
+    /** Editing Functions */
+    /**
+     * editEmployee Modifies existing employee details
+     * I safely update only fields that users choose to change
+     */
     private static void editEmployee(Employee emp, Scanner scanner) {
         System.out.println("\nEditing employee: " + emp.getFirstName() + " " + emp.getLastName());        
         //System.out.println("\nEditing employee: " + emp);
@@ -317,20 +272,4 @@ public class EmployeeService {
         System.out.println("Employee updated successfully!");
     }
 
-    public static Employee generateRandomEmployee() {
-        String[] firstNames = {"John", "Isa", "David", "Tainara", "Robert", "Emily", "Mark", "Sarah"};
-        String[] lastNames = {"Parnell", "Johnson", "Cuddy", "Souza", "Williams", "OConnel", "Jones"};
-        
-        return new Employee(
-            firstNames[random.nextInt(firstNames.length)],
-            lastNames[random.nextInt(lastNames.length)],
-            random.nextBoolean() ? "Male" : "Female",
-            "email" + random.nextInt(1000) + "@company.com",
-            30000 + random.nextInt(70000),
-            Department.values()[random.nextInt(Department.values().length)],
-            new String[]{"junior", "middle", "senior"}[random.nextInt(3)],
-            ManagerType.values()[random.nextInt(ManagerType.values().length)],
-            "TechInnovators"
-        );
-    }
 }

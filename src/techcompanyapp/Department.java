@@ -2,9 +2,16 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Represents all company departments as enum values.
+ * I handle department selection and display for the employee management system.
  */
 public enum Department {
+    /**
+     * Declaration of the departments available in the Application Form.txt file
+     * (I could not find a solution to search in the file, so I worked with the actual list)
+     */
     ACCOUNTING("Accounting"),
     CUSTOMER_SERVICE("Customer Service"),
     FINANCE("Finance"),
@@ -21,15 +28,21 @@ public enum Department {
         this.displayName = displayName;
     }
 
+    /**
+     * getDisplayName
+     * @return Gets the formatted department name
+     */
     public String getDisplayName() {
         return displayName;
     }
-
     @Override
     public String toString() {
         return displayName;
     }
 
+    /**
+     * fromDisplayName:Finds department by display name
+     */
     public static Department fromDisplayName(String displayName) {
         for (Department dept : values()) {
             if (dept.displayName.equalsIgnoreCase(displayName)) {
@@ -39,7 +52,10 @@ public enum Department {
         throw new IllegalArgumentException("No enum constant for display name: " + displayName);
     }
     
-    //static method to list formatted options
+    /**
+     * displayOptions: Shows departments in a formatted list
+     * (static method to list formatted options)
+     */
     public static void displayOptions() {
         System.out.println("\nAvailable Departments:");
         int count = 1;

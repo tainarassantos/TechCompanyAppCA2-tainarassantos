@@ -2,7 +2,10 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Stores and manages all employee data fields.
+ * I handle core employee information and provide comparison methods for sorting.
  */
 
 import java.util.Objects;
@@ -18,6 +21,9 @@ public class Employee implements Comparable<Employee> {
     private ManagerType jobTitle;      // Job title
     private String company;            // Company
 
+    /**
+     * Constructor with mandatory name validation for function Employee 
+     */
     public Employee(String firstName, String lastName, String gender, String email,
                    double salary, Department department, String position,
                    ManagerType jobTitle, String company) {
@@ -32,7 +38,9 @@ public class Employee implements Comparable<Employee> {
         this.company = company;
     }
 
-    // Getters
+    /**
+     * Getters the employee information
+     */
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getGender() { return gender; }
@@ -43,7 +51,9 @@ public class Employee implements Comparable<Employee> {
     public ManagerType getJobTitle() { return jobTitle; }
     public String getCompany() { return company; }
 
-    // Setters
+    /**
+     * Setters the employee information
+     */
     public void setGender(String gender) { this.gender = gender; }
     public void setEmail(String email) { this.email = email; }
     public void setSalary(double salary) { this.salary = salary; }
@@ -52,6 +62,9 @@ public class Employee implements Comparable<Employee> {
     public void setJobTitle(ManagerType jobTitle) { this.jobTitle = jobTitle; }
     public void setCompany(String company) { this.company = company; }
 
+    /**
+     * Compares employees by last then first name
+     */
     @Override
     public int compareTo(Employee other) {
         int lastNameCompare = this.lastName.compareToIgnoreCase(other.lastName);
@@ -59,6 +72,9 @@ public class Employee implements Comparable<Employee> {
         return this.firstName.compareToIgnoreCase(other.firstName);
     }
 
+    /**
+     * Checks equality based on name, email and salary
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,17 +86,26 @@ public class Employee implements Comparable<Employee> {
                Objects.equals(email, employee.email);
     }
 
+    /**
+     * Generates consistent hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase(), email, salary);
     }
 
+    /**
+     * Formats employee for console display
+     */
     @Override
     public String toString() {
         return String.format("%s %s | %s | %s | %s | %s | %s", 
                 firstName, lastName, position, jobTitle, department, company, email);
     }
-
+    
+    /**
+     * Converts employee to CSV format (separate the data with ",")
+     */
     public String toCsvLine() {
         return String.join(",",
                 firstName,

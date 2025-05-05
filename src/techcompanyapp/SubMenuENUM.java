@@ -2,22 +2,29 @@ package techcompanyapp;
 
 /**
  *
- * @author Tainara
+ * @author Tainara de Souza Santos 
+ * @student 2024561
+ * Organises SUBmenu options for each main feature.
+ * I structure the secondary navigation levels for sort/search/add 
+ * operations and I included more functions I wanted for my application.
+ * My design ensures consistent menu handling across all the features.
  */
 
 public enum SubMenuENUM {
-    // Sort submenu options
+    /**
+     * the submenu ENUM configuration
+     */  
     SORT_FIRST_20(1, "Sort first 20 employee names"),
     SORT_BY_DEPARTMENT(2, "Sort employees by department"),
     SORT_RETURN(3, "Return to main menu"),
     
-    // Search submenu options
+    //Search submenu options
     SEARCH_FIRST_NAME(1, "Search by first name"),
     SEARCH_FULL_NAME(2, "Search by full name"),
     SEARCH_BY_DEPARTMENT(3, "List employees by department"),
     SEARCH_RETURN(4, "Return to main menu"),
     
-    // Add records submenu options
+    //Add records submenu options
     ADD_EMPLOYEE(1, "Add new employee"),
     EDIT_EMPLOYEE(2, "Edit employee information"),
     GENERATE_ADD_RANDOM(3, "Generate and add random employee"),
@@ -39,6 +46,9 @@ public enum SubMenuENUM {
         return description;
     }
     
+    /**
+     * displaySubMenu: Shows context-specific submenu options
+     */
     public static void displaySubMenu(MenuENUM mainMenuOption) {
         System.out.println("\n=== " + mainMenuOption.getDescription() + " ===");
         
@@ -60,27 +70,36 @@ public enum SubMenuENUM {
         }
     }
     
+    /**
+     * printOptions: Helper to print available submenu options
+     */
     private static void printOptions(SubMenuENUM... options) {
         for (SubMenuENUM option : options) {
             System.out.printf("%d. %s%n", option.getOptionNumber(), option.getDescription());
         }
     }
     
+    /**
+     * SubMenuENUM fromOptionNumber: Maps user input to submenu choices
+     */
     public static SubMenuENUM fromOptionNumber(int optionNumber, MenuENUM mainMenuOption) {
         switch (mainMenuOption) {
             case SORT:
                 return getSubMenuOption(optionNumber, SORT_FIRST_20, SORT_BY_DEPARTMENT, SORT_RETURN);
             case SEARCH:
                 return getSubMenuOption(optionNumber, SEARCH_FIRST_NAME, SEARCH_FULL_NAME, 
-                                      SEARCH_BY_DEPARTMENT, SEARCH_RETURN);
+                                                      SEARCH_BY_DEPARTMENT, SEARCH_RETURN);
             case ADD_RECORDS:
                 return getSubMenuOption(optionNumber, ADD_EMPLOYEE, EDIT_EMPLOYEE, 
-                                      GENERATE_ADD_RANDOM, ADD_RETURN);
+                                                      GENERATE_ADD_RANDOM, ADD_RETURN);
             default:
                 throw new IllegalArgumentException("Invalid main menu option");
         }
     }
     
+    /**
+     * SubMenuENUM getSubMenuOption: Validates and returns selected submenu item
+     */
     private static SubMenuENUM getSubMenuOption(int optionNumber, SubMenuENUM... options) {
         for (SubMenuENUM option : options) {
             if (option.getOptionNumber() == optionNumber) {
