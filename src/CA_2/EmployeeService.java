@@ -216,25 +216,30 @@ public class EmployeeService {
      * I validate all fields before creating records.
      */
     public static Employee createEmployeeFromInput(Scanner scanner) {
-        System.out.println("\n=== Add New Employee ===");
+        try {
+            System.out.println("\n=== Add New Employee ===");
 
-        String firstName = InputValidator.validateName(scanner, "first name");
-        String lastName = InputValidator.validateName(scanner, "last name");
-        String gender = InputValidator.validateGender(scanner);
-        String email = InputValidator.validateEmail(scanner);
-        double salary = InputValidator.validateSalary(scanner);
-        Department department = InputValidator.validateDepartment(scanner);
-        String position = InputValidator.validatePosition(scanner);
-        ManagerType jobTitle = InputValidator.validateManagerType(scanner);
-        String company = InputValidator.validateCompany(scanner);
-        
-        //extra validation to ensure critical fields are not null
-        if (position == null || position.isEmpty()) {
-            position = "Not specified";
+            String firstName = InputValidator.validateName(scanner, "first name");
+            String lastName = InputValidator.validateName(scanner, "last name");
+            String gender = InputValidator.validateGender(scanner);
+            String email = InputValidator.validateEmail(scanner);
+            double salary = InputValidator.validateSalary(scanner);
+            Department department = InputValidator.validateDepartment(scanner);
+            String position = InputValidator.validatePosition(scanner);
+            ManagerType jobTitle = InputValidator.validateManagerType(scanner);
+            String company = InputValidator.validateCompany(scanner);
+
+            //extra validation to ensure critical fields are not null
+            if (position == null || position.isEmpty()) {
+                position = "Not specified";
+            }
+
+            return new Employee(firstName, lastName, gender, email, salary, 
+                              department, position, jobTitle, company);
+        } catch (Exception e) {
+            System.out.println("Unexpected error creating employee: " + e.getMessage());
+            return null;
         }
-        
-        return new Employee(firstName, lastName, gender, email, salary, 
-                          department, position, jobTitle, company);
     }
 
     /**
@@ -339,7 +344,13 @@ public class EmployeeService {
         
         System.out.print("Salary [" + emp.getSalary() + "]: ");
         String salaryStr = scanner.nextLine();
-        if (!salaryStr.isEmpty()) emp.setSalary(Double.parseDouble(salaryStr));
+        if (!salaryStr.isEmpty()){
+            try {
+                emp.setSalary(Double.parseDouble(salaryStr));
+            }catch (NumberFormatException e) {
+                System.out.println("Invalid salary format. Keeping current value: " + emp.getSalary());
+            }
+        }            
         
         System.out.print("Position [" + emp.getPosition() + "]: ");
         String position = scanner.nextLine();

@@ -28,17 +28,26 @@ public class FileHandler {
                     firstLine = false;
                     continue; // Skip header
                 }
-                
-                Employee employee = parseEmployee(line);
-                if (employee != null) {
-                    employees.add(employee);
+                try {
+                    Employee employee = parseEmployee(line);
+                    if (employee != null) {
+                        employees.add(employee);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error details: " + e.getMessage());
+                // Continue processing next lines
                 }
-            }
+            }        
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found - " + filename);
+            return null;
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             return null;
-        }
-        
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            return null;
+        }        
         return employees;
     }
     
@@ -52,11 +61,22 @@ public class FileHandler {
             
             // Write employee data
             for (Employee emp : employees) {
-                writer.println(empToCsvLine(emp));
+                try {
+                    writer.println(empToCsvLine(emp));
+                } catch (Exception e) {
+                    System.err.println("\nError writing employee data: " + emp);
+                    System.err.println("\nError details: " + e.getMessage());
+                }
             }
             return true;
+        } catch (FileNotFoundException e) {
+            System.err.println("Error to found file - " + filename);
+            return false;
         } catch (IOException e) {
             System.err.println("Error saving to file: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.err.println("Unexpected error while saving: " + e.getMessage());
             return false;
         }
     }

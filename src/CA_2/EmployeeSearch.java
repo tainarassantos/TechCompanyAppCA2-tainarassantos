@@ -53,19 +53,27 @@ public class EmployeeSearch {
      * I adapted with the CA2-RESOURCES shared in Class to check the object EMPLOYEE.
     */ 
     public static int binarySearchRecursive(List<Employee> employees, String key, int left, int right, int searchType) {
-        if (left > right) return -1;
+        try {
+            if (left > right) return -1;
 
-        int mid = left + (right - left) / 2;
-        Employee midEmp = employees.get(mid);
-        String midValue = getCompareValue(midEmp, searchType);
-        int comparison = key.compareToIgnoreCase(midValue);
+            int mid = left + (right - left) / 2;
+            Employee midEmp = employees.get(mid);
+            String midValue = getCompareValue(midEmp, searchType);
+            int comparison = key.compareToIgnoreCase(midValue);
 
-        if (comparison == 0) {
-            return mid;
-        } else if (comparison < 0) {
-            return binarySearchRecursive(employees, key, left, mid - 1, searchType);
-        } else {
-            return binarySearchRecursive(employees, key, mid + 1, right, searchType);
+            if (comparison == 0) {
+                return mid;
+            } else if (comparison < 0) {
+                return binarySearchRecursive(employees, key, left, mid - 1, searchType);
+            } else {
+                return binarySearchRecursive(employees, key, mid + 1, right, searchType);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Search error: Invalid index range");
+            return -1;
+        } catch (NullPointerException e) {
+            System.err.println("Search error: Null data founded");
+            return -1;
         }
     }
 
