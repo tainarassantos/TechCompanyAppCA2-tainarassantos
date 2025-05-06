@@ -94,20 +94,6 @@ public class FileHandler {
      * Formats Employee for CSV output 
      */
     private static String empToCsvLine(Employee emp) {
-        return emp.toCsvLine(); //now use the method CSV 
-        
-        /** OLD METHOD:
-         * return String.join(",",  //method to get the data information
-            emp.getFirstName(),
-            emp.getLastName(),
-            emp.getGender(),
-            emp.getEmail(),
-            String.valueOf(emp.getSalary()),
-            emp.getDepartment().name(),
-            emp.getPosition(),
-            emp.getJobTitle().name(),
-            emp.getCompany()
-        );
-        * */
+        return emp.toCsvLine(); //now use the method CSV         
     }
 }

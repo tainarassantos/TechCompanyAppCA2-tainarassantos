@@ -94,17 +94,6 @@ public class Main {
      */
     private static void handleAddRecordsMenu() {
         System.out.println("\nAdd/Edit Records Menu Selected");
-        EmployeeService.addRecordsMenu(employees, scanner);
-        
-        //Save changes to file after modifications - I CHANGED TO SAVE ON addRecordsMenu
-        //FileHandler.saveToFile(FILE_NAME, employees);
-        /**PLAN B:
-        boolean saved = FileHandler.saveToFile(FILE_NAME, employees);
-            if (!saved) {
-                System.out.println("Warning: Could not save changes to file!");
-            }
-        */
-    }
-    
-    
+        EmployeeService.addRecordsMenu(employees, scanner);               
+    }    
 }

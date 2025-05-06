@@ -87,9 +87,6 @@ public class EmployeeService {
      */
     public static void sortByDepartment(List<Employee> employees) {
         List<Employee> sorted = new ArrayList<>(employees);
-        //sortWithInsertionSort(sorted,
-        //    Comparator.comparing(e -> e.getDepartment().getDisplayName(),
-        //        String.CASE_INSENSITIVE_ORDER));
         //Sort by department name and then by first/last name
         sortWithInsertionSort(sorted,
         Comparator.comparing((Employee e) -> e.getDepartment().getDisplayName(), 
@@ -205,20 +202,7 @@ public class EmployeeService {
                         }
                     } else { //if NO the system finish the operation and not save
                         System.out.println("Operation canceled. Random employee not saved to file.");
-                    }
-                    
-                    /** 
-                        //OLD COLD SAVING AUTOMATIC THE CREATED RANDOM EMPLOYEE 
-                    Employee randomEmployee = generateRandomEmployee();
-                    employees.add(randomEmployee);
-                    //System.out.println("Random employee generated: " + randomEmployee);
-                    //save the RANDOM employee on the file
-                    if (FileHandler.saveToFile("Applicants_Form.txt", employees)) {
-                        System.out.println("Random employee generated successfully: " + randomEmployee);
-                    } else {
-                        System.out.println("ERROR: Random employee generated but unable to save to file!");
-                    }       
-                    * */
+                    }                    
                     break;
                 case ADD_RETURN:
                     inAddMenu = false;
@@ -379,4 +363,3 @@ public class EmployeeService {
     }
 
 }
-
