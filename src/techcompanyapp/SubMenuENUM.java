@@ -15,13 +15,13 @@ public enum SubMenuENUM {
      * the submenu ENUM configuration
      */  
     SORT_FIRST_20(1, "Sort first 20 employee names"),
-    SORT_BY_DEPARTMENT(2, "Sort employees by department"),
+    SORT_BY_DEPARTMENT(2, "Sort ALL employees by department"),
     SORT_RETURN(3, "Return to main menu"),
     
     //Search submenu options
-    SEARCH_FIRST_NAME(1, "Search by first name"),
-    SEARCH_FULL_NAME(2, "Search by full name"),
-    SEARCH_BY_DEPARTMENT(3, "List employees by department"),
+    SEARCH_FIRST_NAME(1, "Search employees by first name"),
+    SEARCH_FULL_NAME(2, "Search employees by full name"),
+    SEARCH_BY_DEPARTMENT(3, "Search employees by department"),
     SEARCH_RETURN(4, "Return to main menu"),
     
     //Add records submenu options

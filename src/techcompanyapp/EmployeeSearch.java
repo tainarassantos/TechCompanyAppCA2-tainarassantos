@@ -82,7 +82,10 @@ public class EmployeeSearch {
     }
 
     /**
-     * searchByFirstName will search for employees by name using binary search (requires sorted list).
+     * searchByFirstName  search for employees by name using binary search (requires sorted list).
+     * @param employees List of employees (should be sorted by first name)
+     * @param firstName First name to search for
+     * @return List of matching employees (may be empty if none found)
      */
     public static void searchByFirstName(List<Employee> employees, Scanner scanner) {
         System.out.print("\nEnter first name to search: ");
@@ -102,7 +105,85 @@ public class EmployeeSearch {
             System.out.println(sorted.get(pos));
         }
     }
+    /**
+    public static void searchByFirstName(List<Employee> employees, Scanner scanner) {
+        System.out.print("\nEnter first name to search: ");
+        String firstName = scanner.nextLine().trim();
 
+        // 1. Ordena a lista pelo primeiro nome
+        List<Employee> sorted = new ArrayList<>(employees);
+        Collections.sort(sorted, Comparator.comparing(Employee::getFirstName));
+
+        // 2. Executa a busca binária
+        int pos = binarySearchRecursive(sorted, firstName, 0, sorted.size() - 1, 1);
+
+        // 3. Processa resultados
+        if (pos == -1) {
+            System.out.println("No employees found with first name: " + firstName);
+        } else {
+            // Encontra todos os empregados com o mesmo nome (pode haver múltiplos)
+            List<Employee> results = new ArrayList<>();
+            results.add(sorted.get(pos));
+
+            // Verifica elementos à esquerda (nomes iguais)
+            int left = pos - 1;
+            while (left >= 0 && sorted.get(left).getFirstName().equalsIgnoreCase(firstName)) {
+                results.add(sorted.get(left));
+                left--;
+            }
+
+            // Verifica elementos à direita (nomes iguais)
+            int right = pos + 1;
+            while (right < sorted.size() && sorted.get(right).getFirstName().equalsIgnoreCase(firstName)) {
+                results.add(sorted.get(right));
+                right++;
+            }
+
+            displaySearchResults(results, "Employees with first name '" + firstName + "'");
+        }
+    }
+    /**
+    public static List<Employee> searchByFirstName(List<Employee> employees, String firstName) {
+        if (firstName == null || firstName.trim().isEmpty() || employees.isEmpty()) {
+            return Collections.emptyList();
+        }
+        //Make a copy to avoid modifying the original list
+        List<Employee> sorted = new ArrayList<>(employees);
+
+        //Ensure the list is sorted by first name
+        Collections.sort(sorted, Comparator.comparing(Employee::getFirstName));
+
+        //Binary search to find first occurrence
+        int pos = binarySearchRecursive(sorted, firstName.trim(), 0, sorted.size() - 1, 1);
+
+        if (pos == -1) {
+            return Collections.emptyList();
+        }
+
+        //Find all matching employees (since there might be multiple with same first name)
+        List<Employee> result = new ArrayList<>();
+        result.add(sorted.get(pos));
+
+        //Check previous elements
+        int left = pos - 1;
+        while (left >= 0 && sorted.get(left).getFirstName().equalsIgnoreCase(firstName)) {
+            result.add(sorted.get(left));
+            left--;
+        }
+
+        //Check next elements
+        int right = pos + 1;
+        while (right < sorted.size() && sorted.get(right).getFirstName().equalsIgnoreCase(firstName)) {
+            result.add(sorted.get(right));
+            right++;
+        }
+
+        return result;
+    }
+
+    */
+
+    
     /**
      * searchByFullName will search for employees by full name 
      * in FIRST+LAST name order using recursive binary search.

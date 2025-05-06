@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileHandler {
+public class FileHandler {       
     /**
      * Loads employees information from CSV file
      */

@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    //set the default data file name
     private static final String FILE_NAME = "Applicants_Form.txt";
+    
     private static List<Employee> employees;
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -94,8 +96,14 @@ public class Main {
         System.out.println("\nAdd/Edit Records Menu Selected");
         EmployeeService.addRecordsMenu(employees, scanner);
         
-        //Save changes to file after modifications
-        FileHandler.saveToFile(FILE_NAME, employees);
+        //Save changes to file after modifications - I CHANGED TO SAVE ON addRecordsMenu
+        //FileHandler.saveToFile(FILE_NAME, employees);
+        /**PLAN B:
+        boolean saved = FileHandler.saveToFile(FILE_NAME, employees);
+            if (!saved) {
+                System.out.println("Warning: Could not save changes to file!");
+            }
+        */
     }
     
     

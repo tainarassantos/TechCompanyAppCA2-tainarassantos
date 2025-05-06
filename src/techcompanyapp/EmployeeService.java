@@ -185,15 +185,32 @@ public class EmployeeService {
                 case ADD_EMPLOYEE:
                     Employee newEmployee = createEmployeeFromInput(scanner);
                     employees.add(newEmployee);
-                    System.out.println("Employee added successfully!");
+                    //save the add employee on the file
+                    if (FileHandler.saveToFile("Applicants_Form.txt", employees)) {
+                        System.out.println("Employee added successfully!");
+                    } else {
+                        System.out.println("ERROR: Unable to save new employee to file!");
+                    }
                     break;
                 case EDIT_EMPLOYEE:
                     editEmployeeMenu(employees, scanner);
+                    //save the EDIT employee on the file
+                    if (FileHandler.saveToFile("Applicants_Form.txt", employees)) {
+                        System.out.println("Employee edited successfully!");
+                    } else {
+                        System.out.println("ERROR: Unable to edit the employee to file!");
+                    }
                     break;
                 case GENERATE_ADD_RANDOM:
                     Employee randomEmployee = generateRandomEmployee();
                     employees.add(randomEmployee);
-                    System.out.println("Random employee generated: " + randomEmployee);
+                    //System.out.println("Random employee generated: " + randomEmployee);
+                    //save the RANDOM employee on the file
+                    if (FileHandler.saveToFile("Applicants_Form.txt", employees)) {
+                        System.out.println("Random employee generated successfully: " + randomEmployee);
+                    } else {
+                        System.out.println("ERROR: Random employee generated but unable to save to file!");
+                    }                    
                     break;
                 case ADD_RETURN:
                     inAddMenu = false;
@@ -233,12 +250,12 @@ public class EmployeeService {
      * I help users find and choose which record to modify
      */
     private static void editEmployeeMenu(List<Employee> employees, Scanner scanner) {
-        System.out.print("\nEnter employee last name to edit: ");
-        String lastName = scanner.nextLine();
+        System.out.print("\nEnter employee first name to edit: ");
+        String firstName = scanner.nextLine();
         
-        List<Employee> found = EmployeeSearch.searchByLastName(employees, lastName);
+        List<Employee> found = EmployeeSearch.searchByFirstName(employees, firstName); 
         if (found.isEmpty()) {
-            System.out.println("No employees found with that last name.");
+            System.out.println("No employees found with that first name.");
             return;
         }
         
