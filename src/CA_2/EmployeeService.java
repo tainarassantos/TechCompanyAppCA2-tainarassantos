@@ -123,18 +123,6 @@ public class EmployeeService {
         }
         System.out.println("===============================================================================================================");
     
-        /**System.out.println("\n=== Employees Sorted by Department ===");
-        Department currentDept = null;
-        for (Employee emp : sorted) {
-            if (!emp.getDepartment().equals(currentDept)) {
-                currentDept = emp.getDepartment();
-                System.out.println("\n--- " + currentDept.getDisplayName() + " ---");
-            }
-            System.out.printf("%-15s %-15s | %-20s%n",
-                emp.getFirstName(),
-                emp.getLastName(),
-                emp.getJobTitle().getDisplayName());
-        }*/
     }
 
     
@@ -203,6 +191,25 @@ public class EmployeeService {
                     break;
                 case GENERATE_ADD_RANDOM:
                     Employee randomEmployee = generateRandomEmployee();
+                    System.out.println("\n=== Random Employee Generated ===");
+                    System.out.println(randomEmployee);
+
+                    //ASK USER IF HE WANTS TO SAVE THE NEW RANDOM EMPLOYEE 
+                    if (InputValidator.getYesNoInput(scanner, "Add this employee to database? (y/n): ")) {
+                        employees.add(randomEmployee);
+                        //if YES save the RANDOM employee on the file
+                        if (FileHandler.saveToFile("Applicants_Form.txt", employees)) {
+                            System.out.println("Random employee added successfully!");
+                        } else { //if error to save the data
+                            System.out.println("Error: Unable to save random employee to file!");
+                        }
+                    } else { //if NO the system finish the operation and not save
+                        System.out.println("Operation canceled. Random employee not saved to file.");
+                    }
+                    
+                    /** 
+                        //OLD COLD SAVING AUTOMATIC THE CREATED RANDOM EMPLOYEE 
+                    Employee randomEmployee = generateRandomEmployee();
                     employees.add(randomEmployee);
                     //System.out.println("Random employee generated: " + randomEmployee);
                     //save the RANDOM employee on the file
@@ -210,7 +217,8 @@ public class EmployeeService {
                         System.out.println("Random employee generated successfully: " + randomEmployee);
                     } else {
                         System.out.println("ERROR: Random employee generated but unable to save to file!");
-                    }                    
+                    }       
+                    * */
                     break;
                 case ADD_RETURN:
                     inAddMenu = false;
@@ -253,26 +261,54 @@ public class EmployeeService {
         System.out.print("\nEnter employee first name to edit: ");
         String firstName = scanner.nextLine();
         
+        //validate if the firstName is empty
+        if (firstName.isEmpty()) {
+            System.out.println("Error: First name cannot be empty. \nPlease, try again.");
+            return;
+        }
+        
+        //Search for employees with the given name
         List<Employee> found = EmployeeSearch.searchByFirstName(employees, firstName); 
         if (found.isEmpty()) {
             System.out.println("No employees found with that first name.");
             return;
         }
         
-        System.out.println("\nFound Employees:");
+        System.out.println("\nFound Employees:");        
         for (int i = 0; i < found.size(); i++) {
-            System.out.printf("%d. %s%n", i+1, found.get(i));
+            //System.out.printf("%d. %s%n", i+1, found.get(i));  
+            System.out.printf("%d. %s %s | %s | %s%n",i+1, 
+                                found.get(i).getFirstName(),
+                                found.get(i).getLastName(),
+                                found.get(i).getJobTitle(),
+                                found.get(i).getDepartment());
         }
         
-        System.out.print("Select employee to edit (1-" + found.size() + "): ");
-        int selection = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        
-        if (selection < 1 || selection > found.size()) {
-            System.out.println("Invalid selection.");
-            return;
+        int selection = -1;
+        boolean validInput = false;
+
+        while (!validInput) {
+            System.out.print("Select employee to edit (1-" + found.size() + ", or inform 0 to cancel): ");
+            try {
+                selection = Integer.parseInt(scanner.nextLine());
+                //if user click 0 will cancel the edit operation
+                if (selection == 0) {
+                    System.out.println("Operation canceled by the user.");
+                    return;
+                }
+                //if user insert invalid information will request the correct
+                if (selection < 1 || selection > found.size()) {
+                    System.out.println("Invalid selection. Please enter a number between 1 and " + found.size());
+                } else {
+                    //when user set the correct user will return true to proceed with the edition
+                    validInput = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
         }
-        
+                
+        //proceed to edit the selected employee
         editEmployee(found.get(selection-1), scanner);
     }
     
@@ -343,3 +379,4 @@ public class EmployeeService {
     }
 
 }
+

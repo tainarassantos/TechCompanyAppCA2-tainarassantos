@@ -254,4 +254,20 @@ public class InputValidator {
             System.out.println("Company name cannot be empty.");
         }
     }
+    
+    /**
+    * getYesNoInput: validates the user input - Yes/No 
+    */
+    public static boolean getYesNoInput(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("y") || input.equals("yes")) {
+                return true; //if yes
+            } else if (input.equals("n") || input.equals("no")) {
+                return false; //if no
+            }
+            System.out.println("Please enter 'y' or 'n'.");
+        }
+    }
 }
